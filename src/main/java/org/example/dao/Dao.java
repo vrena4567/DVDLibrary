@@ -5,11 +5,11 @@ import org.example.dto.DVD;
 import java.util.List;
 
 public interface Dao {
-    DVD addDVD(String DVDid, DVD dvd);
-    DVD removeDVD(String DVDid);
-    DVD updateDVD(String DVDid, DVD dvd);
-    List<DVD> getAllDVDs();
-    DVD getDvdById(String DVDid);
-    DVD getDvdByTitle(String title);
+    DVD addDVD(String DVDid, DVD dvd) throws DVDLibraryPersistenceException;
+    DVD removeDVD(String DVDid) throws DVDLibraryPersistenceException;
+    DVD updateDVD(DVD dvd, int dvdField, String newInfo) throws DVDLibraryPersistenceException;
+    List<DVD> getAllDVDs() throws DVDLibraryPersistenceException;
+    DVD getDvdById(String DVDid) throws DVDLibraryPersistenceException;
+    DVD getDvdByTitle(String title) throws DVDLibraryPersistenceException;
 
 }

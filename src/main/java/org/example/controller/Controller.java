@@ -1,7 +1,9 @@
 package org.example.controller;
 
+import org.example.dao.DVDLibraryPersistenceException;
 import org.example.dao.Dao;
 import org.example.dao.DaoFileImpl;
+import org.example.dto.DVD;
 import org.example.ui.UserIO;
 import org.example.ui.UserIOConsoleImpl;
 import org.example.ui.View;
@@ -16,13 +18,16 @@ public class Controller {
         while (keepGoing){
             menuSelection = getMenuSelection();
             switch(menuSelection){
-                case 1 -> create();
-                case 2 -> delete();
-                case 3 -> edit();
-                case 4 -> listAll();
-                case 5 -> searchById();
-                case 6 -> searchByTitle();
-                case 7 -> exit(); keepGoing = false;
+                 case 1 -> create();
+                 case 2 -> delete();
+                 case 3 -> edit();
+                 case 4 -> listAll();
+                 case 5 -> searchById();
+                 case 6 -> searchByTitle();
+                case 7 -> {
+                    exit();
+                    keepGoing = false;
+                }
                 default -> unknownCommand();
 
             }
@@ -35,8 +40,15 @@ public class Controller {
         return view.getMenuSelection();
     }
 
-    private void create(){
-        // TODO implement create new DVD method
+    private void create() throws DVDLibraryPersistenceException {
+        DVD dvd = view.getNewDvdInfo();
+        dao.addDVD(dvd.getDvdId(), dvd);
+        view.displaySuccessBannerNewDvd();
+    }
+
+    private void listAll() throws DVDLibraryPersistenceException{
+        view.displayListBanner();
+        dao.getAllDVDs();
     }
 
     private void exit(){

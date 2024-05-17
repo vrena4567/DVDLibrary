@@ -10,6 +10,8 @@ public class DVD {
     private String directorName;
     private String studio;
     private String userNote;
+
+    public DVD(String dvdId){}
     public String getDvdId(){
         return dvdId;
     }
