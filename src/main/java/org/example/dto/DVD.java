@@ -11,7 +11,9 @@ public class DVD {
     private String studio;
     private String userNote;
 
-    public DVD(String dvdId){}
+    public DVD(String dvdId){
+        this.dvdId = dvdId;
+    }
     public String getDvdId(){
         return dvdId;
     }

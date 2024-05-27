@@ -14,6 +14,10 @@ public class DaoFileImpl implements Dao {
         this.DVD_LIBRARY = "dvdlibrary.txt";
     }
 
+    public DaoFileImpl(String dvdTextFile) {
+        this.DVD_LIBRARY = dvdTextFile;
+    }
+
     @Override
     public DVD addDVD(String dvdId, DVD dvd) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
@@ -23,7 +27,7 @@ public class DaoFileImpl implements Dao {
     }
 
     @Override
-    public DVD removeDVD(String dvdId) throws DVDLibraryPersistenceException{
+    public DVD removeDVD(String dvdId) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
         DVD removedDVD = dvdCollection.remove(dvdId);
         writeDVDLibrary();
@@ -31,11 +35,10 @@ public class DaoFileImpl implements Dao {
     }
 
     @Override
-    public DVD updateDVD(DVD dvd, int dvdField, String newInfo) throws DVDLibraryPersistenceException{
+    public DVD updateDVD(DVD dvdToEdit, int dvdField, String newInfo) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
-        DVD dvdToEdit = dvdCollection.get(dvd.getDvdId());
 
-        switch (dvdField){
+        switch (dvdField) {
             case 1:
                 dvdToEdit.setTitle(newInfo);
                 break;
@@ -57,14 +60,15 @@ public class DaoFileImpl implements Dao {
             default:
                 return null;
         }
+        dvdCollection.put(dvdToEdit.getDvdId(), dvdToEdit);
         writeDVDLibrary();
         return dvdToEdit;
     }
 
     @Override
-    public List<DVD> getAllDVDs() throws DVDLibraryPersistenceException{
+    public List<DVD> getAllDVDs() throws DVDLibraryPersistenceException {
         loadDVDLibrary();
-        return new ArrayList<>(dvdCollection.values());
+        return new ArrayList<DVD>(dvdCollection.values());
     }
 
     @Override
@@ -74,11 +78,11 @@ public class DaoFileImpl implements Dao {
     }
 
     @Override
-    public DVD getDvdByTitle(String title) throws DVDLibraryPersistenceException{
+    public DVD getDvdByTitle(String title) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
         List<DVD> dvdList = this.getAllDVDs();
         for (DVD currentDvd : dvdList) {
-            if(currentDvd.getTitle().equals(title)){
+            if (currentDvd.getTitle().equals(title)) {
                 return currentDvd;
             }
 
@@ -86,7 +90,7 @@ public class DaoFileImpl implements Dao {
         return null;
     }
 
-    private void loadDVDLibrary() throws DVDLibraryPersistenceException{
+    private void loadDVDLibrary() throws DVDLibraryPersistenceException {
         Scanner sc;
         try {
             sc = new Scanner(new BufferedReader(new FileReader(DVD_LIBRARY)));
@@ -97,7 +101,7 @@ public class DaoFileImpl implements Dao {
         String currentLine;
         DVD currentDVD;
 
-        while (sc.hasNextLine()){
+        while (sc.hasNextLine()) {
             currentLine = sc.nextLine();
             currentDVD = unmarshallDVD(currentLine);
             dvdCollection.put(currentDVD.getDvdId(), currentDVD);
@@ -106,31 +110,26 @@ public class DaoFileImpl implements Dao {
         sc.close();
     }
 
-    private DVD unmarshallDVD(String line){
-        String[] splittedLine = line.split(DELIMITER);
-        String tokenId = splittedLine[0];
-        String tokenTitle = splittedLine[1];
-        String tokenReleaseDate = splittedLine[2];
-        String tokenMpaaRating = splittedLine[3];
-        String tokenDirectorName = splittedLine[4];
-        String tokenStudio = splittedLine[5];
-        String tokenUserNote = splittedLine[6];
+    private DVD unmarshallDVD(String line) {
+        String[] dvdTokens = line.split(DELIMITER);
+        String dvdId = dvdTokens[0];
 
-        DVD unmarshalledDVD = new DVD(tokenId);
-        unmarshalledDVD.setTitle(tokenTitle);
-        unmarshalledDVD.setReleaseDate(tokenReleaseDate);
-        unmarshalledDVD.setMpaaRating(tokenMpaaRating);
-        unmarshalledDVD.setDirectorName(tokenDirectorName);
-        unmarshalledDVD.setStudio(tokenStudio);
-        unmarshalledDVD.setUserNote(tokenUserNote);
+        DVD unmarshalledDVD = new DVD(dvdId);
+
+        unmarshalledDVD.setTitle(dvdTokens[1]);
+        unmarshalledDVD.setReleaseDate(dvdTokens[2]);
+        unmarshalledDVD.setMpaaRating(dvdTokens[3]);
+        unmarshalledDVD.setDirectorName(dvdTokens[4]);
+        unmarshalledDVD.setStudio(dvdTokens[5]);
+        unmarshalledDVD.setUserNote(dvdTokens[6]);
         return unmarshalledDVD;
     }
 
-    private void writeDVDLibrary() throws DVDLibraryPersistenceException{
+    private void writeDVDLibrary() throws DVDLibraryPersistenceException {
         PrintWriter out;
         try {
             out = new PrintWriter(new FileWriter(DVD_LIBRARY));
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new DVDLibraryPersistenceException(
                     "Could not save DVD to data.", e);
         }
@@ -145,7 +144,7 @@ public class DaoFileImpl implements Dao {
         out.close();
     }
 
-    private String marshallDVD(DVD dvd){
+    private String marshallDVD(DVD dvd) {
         String marshalledDVD = dvd.getDvdId() + DELIMITER;
         marshalledDVD += dvd.getTitle() + DELIMITER;
         marshalledDVD += dvd.getReleaseDate() + DELIMITER;
