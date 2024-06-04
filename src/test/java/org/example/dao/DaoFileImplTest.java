@@ -128,7 +128,30 @@ class DaoFileImplTest {
     }
 
     @Test
-    void updateDVD() {
+    void updateDVD() throws Exception{
+        // Create our method test inputs
+        String dvdId = "001";
+        DVD dvd = new DVD(dvdId);
+        dvd.setTitle("A Beautiful Minc");
+        dvd.setReleaseDate("2002-02-28");
+        dvd.setMpaaRating("PG-13");
+        dvd.setDirectorName("Ron Howard");
+        dvd.setStudio("Universal Pictures");
+        dvd.setUserNote("A good movie, recommending");
+
+        // Add DVD to the dao
+        testDao.addDVD(dvdId, dvd);
+
+        // Update DVD element
+        int fieldToEdit = 1;
+        String dvdNewInfo = "A Beautiful Mind";
+        testDao.updateDVD(dvd, fieldToEdit, dvdNewInfo);
+
+        DVD retrievedDVD = testDao.getDvdById(dvdId);
+
+        // Check if the field been updated correctly
+        assertEquals(dvd.getTitle(), dvdNewInfo, "The updated title of the DVD should be: 'A Beautiful Mind'");
+        assertEquals(dvd, retrievedDVD, "The retrieved DVD should be equal to the created one.");
     }
 
     @Test

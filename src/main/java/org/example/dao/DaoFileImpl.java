@@ -57,6 +57,18 @@ public class DaoFileImpl implements Dao {
         return removedDVD;
     }
 
+    /**
+     * Updates the given DVD in the library with the given information
+     * based on the given field associated with the DVD field number.
+     *
+     * @param dvdToEdit DVD to be updated in the library
+     * @param dvdField field number to be updated
+     * @param newInfo new information to be saved to the given DVD
+     * @return updated DVD object
+     * @throws DVDLibraryPersistenceException exception if the wirtting or
+     * loading of the file wasn't successful
+     */
+
     @Override
     public DVD updateDVD(DVD dvdToEdit, int dvdField, String newInfo) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
