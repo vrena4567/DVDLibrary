@@ -10,4 +10,3 @@ Represents the latest version of the project.
 
 ### simpleDVDLibVersion
 A simple MVC model based project version with JUnit tests.
-Runs without any configuration.
