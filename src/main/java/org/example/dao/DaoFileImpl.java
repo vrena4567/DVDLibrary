@@ -18,6 +18,18 @@ public class DaoFileImpl implements Dao {
         this.DVD_LIBRARY = dvdTextFile;
     }
 
+    /**
+     * Adds a given DVD to the library and associates it with the given DVD id.
+     * If there is already a DVD associated with the given DVD id it will return
+     * that DVD object, otherwise it will return null.
+     *
+     * @param dvdId id with which DVD is to be associated
+     * @param dvd DVD to be added to the library
+     * @return the DVD object previously associated with the given DVD id if
+     * it exist, null otherwise
+     * @throws DVDLibraryPersistenceException exception if the wirtting or
+     *      * loading of the file wasn't successful
+     */
     @Override
     public DVD addDVD(String dvdId, DVD dvd) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
@@ -26,6 +38,17 @@ public class DaoFileImpl implements Dao {
         return newDVD;
     }
 
+    /**
+     * Removes from the library the DVD associated with the given id.
+     * Returns the DVD object that is being removed or null if
+     * there is no DVD associated with the given id
+     *
+     * @param dvdId id of DVD to be removed
+     * @return DVD object that was removed or null if no DVD was associated
+     * with the given DVD id
+     * @throws DVDLibraryPersistenceException exception if the wirtting or
+     * loading of the file wasn't successful
+     */
     @Override
     public DVD removeDVD(String dvdId) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
@@ -65,18 +88,45 @@ public class DaoFileImpl implements Dao {
         return dvdToEdit;
     }
 
+    /**
+     * Returns a List of all DVDs in the library.
+     *
+     * @return DVD List containing all the DVDS in the library.
+     * @throws DVDLibraryPersistenceException exception if the wirtting or
+     * loading of the file wasn't successful
+     */
     @Override
     public List<DVD> getAllDVDs() throws DVDLibraryPersistenceException {
         loadDVDLibrary();
         return new ArrayList<DVD>(dvdCollection.values());
     }
 
+    /**
+     * Returns the DVD object associated with the given DVD id.
+     * Returns null if no such DVD exists
+     *
+     * @param dvdId id of the DVD to retrieve
+     * @return the DVD object associated with the given DVD id,
+     * null if no such DVD exists
+     * @throws DVDLibraryPersistenceException exception if the wirtting or
+     * loading of the file wasn't successful
+     */
     @Override
     public DVD getDvdById(String dvdId) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
         return dvdCollection.get(dvdId);
     }
 
+    /**
+     * Returns the DVD object associated with the given DVD title.
+     * Returns null if no such DVD exists
+     *
+     * @param title title of the DVD to retrieve
+     * @return the DVD object associated with the given DVD title,
+     * null if no such DVD exists
+     * @throws DVDLibraryPersistenceException exception if the wirtting or
+     * loading of the file wasn't successful
+     */
     @Override
     public DVD getDvdByTitle(String title) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
