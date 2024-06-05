@@ -1,6 +1,6 @@
 # DVD Library
 
-### This is a simple DVD Library based on the projects I did at the Wiley Edge's internship
+### This is a simple DVD Library based on the projects I did in the latest internship
 I combined all the tech stack learned throughout the 7 weeks and put together this showcase project.
 
 ## Branches explained
