@@ -19,11 +19,12 @@ public class View {
         io.print("4. List All DVDs");
         io.print("5. Search DVD by ID");
         io.print("6. Search DVD by title");
-        io.print("7. Exit");
+        io.print("7. Filter on DVDs");
+        io.print("8. Exit");
     }
 
     public int getMenuSelection() {
-        return io.readInt("Please select from the choices above.", 1, 7);
+        return io.readInt("Please select from the choices above.", 1, 8);
     }
 
     public DVD getNewDvdInfo() {
@@ -132,5 +133,30 @@ public class View {
 
     public String getDVDTitle() {
         return io.readString("Please enter the title of the DVD you want to search for: ");
+    }
+
+    public int displayFilterMenu() {
+        io.print("==== Filter DVD By ====");
+        io.print("Please choose based on what would you like to filter? " +
+                "\n 1. Release Year" +
+                "\n 2. MPAA rating " +
+                "\n 3. Director's name " +
+                "\n 4. Studio ");
+        return io.readInt("Please choose ", 1,4);
+    }
+
+    public int getYearInput() {
+        return io.readInt("Which year would you like to filter on? ");
+    }
+
+    public String getMpaaRating() {
+        return io.readString("Which MPAA rating would you like to filter on? ");
+    }
+
+    public String getDirectorNameInput() {
+        return io.readString("Which director would you like to filter on? ");
+    }
+    public String getStudioInput() {
+        return io.readString("Which studio would you like to filter on? ");
     }
 }

@@ -8,6 +8,7 @@ import org.example.ui.UserIO;
 import org.example.ui.UserIOConsoleImpl;
 import org.example.ui.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -27,7 +28,8 @@ public class Controller {
                 case 4 -> listAll();
                 case 5 -> searchById();
                 case 6 -> searchByTitle();
-                case 7 -> {
+                case 7 -> filterBy();
+                case 8 -> {
                     exit();
                     keepGoing = false;
                 }
@@ -35,6 +37,32 @@ public class Controller {
 
             }
         }
+
+    }
+
+    private void filterBy() throws DVDLibraryPersistenceException {
+        int choice = view.displayFilterMenu();
+        List<DVD> filteredList = new ArrayList<>();
+        switch (choice) {
+            case 1 -> {
+                int year = view.getYearInput();
+                filteredList = dao.filterByYear(year);
+            }
+            case 2 -> {
+                String MpaaRating = view.getMpaaRating();
+                dao.filterByRating(MpaaRating);
+            }
+            case 3 -> {
+                String directorName = view.getDirectorNameInput();
+                filteredList = dao.filterByDirector(directorName);
+            }
+            case 4 -> {
+                String studioName = view.getStudioInput();
+                filteredList = dao.filterByStudio(studioName);
+            }
+            default -> unknownCommand();
+        }
+        view.displayAllDvds(filteredList);
 
     }
 

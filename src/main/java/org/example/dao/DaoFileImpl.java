@@ -4,6 +4,7 @@ import org.example.dto.DVD;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DaoFileImpl implements Dao {
     Map<String, DVD> dvdCollection = new HashMap<>();
@@ -151,6 +152,58 @@ public class DaoFileImpl implements Dao {
         }
         return null;
     }
+
+    @Override
+    public List<DVD> filterByYear(int releaseYear) throws DVDLibraryPersistenceException {
+        loadDVDLibrary();
+        List<DVD> sameYearDvds = dvdCollection.values().stream()
+                .filter(dvd -> dvd.getReleaseDate().getYear() == releaseYear)
+                .collect(Collectors.toList());
+        return sameYearDvds;
+    }
+
+    @Override
+    public List<DVD> filterByRating(String mpaaRating) throws DVDLibraryPersistenceException {
+        loadDVDLibrary();
+        List<DVD> filteredByRate = dvdCollection.values().stream()
+                .filter(dvd -> dvd.getMpaaRating().equals(mpaaRating))
+                .collect(Collectors.toList());
+        return filteredByRate;
+    }
+
+    @Override
+    public List<DVD> filterByDirector(String directorName) throws DVDLibraryPersistenceException {
+        loadDVDLibrary();
+        List<DVD> filteredByDir = dvdCollection.values().stream()
+                .filter(dvd -> dvd.getDirectorName().equals(directorName))
+                .collect(Collectors.toList());
+        return filteredByDir;
+    }
+
+    @Override
+    public List<DVD> filterByStudio(String studio) throws DVDLibraryPersistenceException {
+        loadDVDLibrary();
+        List<DVD> filteredByStud = dvdCollection.values().stream()
+                .filter(dvd -> dvd.getStudio().equals(studio))
+                .collect(Collectors.toList());
+        return filteredByStud;
+    }
+
+    @Override
+    public int findAvarageAge() {
+        return 0;
+    }
+
+    @Override
+    public DVD findNewestMovie() {
+        return null;
+    }
+
+    @Override
+    public DVD findOldestMovie() {
+        return null;
+    }
+
 
     private void loadDVDLibrary() throws DVDLibraryPersistenceException {
         Scanner sc;
