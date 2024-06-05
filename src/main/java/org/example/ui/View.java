@@ -20,11 +20,12 @@ public class View {
         io.print("5. Search DVD by ID");
         io.print("6. Search DVD by title");
         io.print("7. Filter on DVDs");
-        io.print("8. Exit");
+        io.print("8. Find a movie (average age/youngest/oldest)");
+        io.print("9. Exit");
     }
 
     public int getMenuSelection() {
-        return io.readInt("Please select from the choices above.", 1, 8);
+        return io.readInt("Please select from the choices above.", 1, 9);
     }
 
     public DVD getNewDvdInfo() {
@@ -119,6 +120,7 @@ public class View {
     }
 
     public void displayDVD(DVD dvd) {
+        io.print("==== The DVD : "+ dvd.getTitle()+" ====");
         io.print(dvd.getDvdId() + " - " + dvd.getTitle() +
                 "\n Release date: " + dvd.getReleaseDate() +
                 "\n MPAA rating: " + dvd.getMpaaRating() +
@@ -158,5 +160,17 @@ public class View {
     }
     public String getStudioInput() {
         return io.readString("Which studio would you like to filter on? ");
+    }
+    public int displayFinderMenu() {
+        io.print("==== Find DVD ====");
+        io.print("Please choose what you would like to find: " +
+                "\n 1. Average Age of Movies" +
+                "\n 2. Youngest movie " +
+                "\n 3. Oldest movie ");
+        return io.readInt("Please choose ", 1,3);
+    }
+
+    public void displayAverageAge(String average) {
+        io.print("The average age of the movies is: " + average);
     }
 }

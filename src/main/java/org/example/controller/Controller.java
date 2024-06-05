@@ -29,7 +29,8 @@ public class Controller {
                 case 5 -> searchById();
                 case 6 -> searchByTitle();
                 case 7 -> filterBy();
-                case 8 -> {
+                case 8 -> findOne();
+                case 9 -> {
                     exit();
                     keepGoing = false;
                 }
@@ -38,6 +39,25 @@ public class Controller {
             }
         }
 
+    }
+    private void findOne() throws DVDLibraryPersistenceException {
+        int choice = view.displayFinderMenu();
+        DVD foundDVD;
+        switch (choice) {
+            case 1 -> {
+                String average = dao.findAvarageAge();
+                view.displayAverageAge(average);
+            }
+            case 2 -> {
+                DVD youngest = dao.findNewestMovie();
+                view.displayDVD(youngest);
+            }
+            case 3 -> {
+                DVD oldest = dao.findOldestMovie();
+                view.displayDVD(oldest);
+            }
+            default -> unknownCommand();
+        }
     }
 
     private void filterBy() throws DVDLibraryPersistenceException {

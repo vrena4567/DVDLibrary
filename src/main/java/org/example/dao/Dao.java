@@ -21,7 +21,7 @@ public interface Dao {
     List<DVD> filterByRating(String mpaaRating) throws DVDLibraryPersistenceException;
     List<DVD> filterByDirector(String directorName) throws DVDLibraryPersistenceException;
     List<DVD> filterByStudio(String studio) throws DVDLibraryPersistenceException;
-    int findAvarageAge();
-    DVD findNewestMovie();
-    DVD findOldestMovie();
+    String findAvarageAge() throws DVDLibraryPersistenceException;
+    DVD findNewestMovie() throws DVDLibraryPersistenceException;
+    DVD findOldestMovie() throws DVDLibraryPersistenceException;
 }

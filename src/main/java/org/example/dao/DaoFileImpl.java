@@ -3,6 +3,9 @@ package org.example.dao;
 import org.example.dto.DVD;
 
 import java.io.*;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -190,18 +193,29 @@ public class DaoFileImpl implements Dao {
     }
 
     @Override
-    public int findAvarageAge() {
-        return 0;
+    public String findAvarageAge() throws DVDLibraryPersistenceException{
+        loadDVDLibrary();
+        LocalDate today = LocalDate.now();
+        DecimalFormat df = new DecimalFormat("0.00");
+        double avrAge = dvdCollection.values().stream()
+                .collect(Collectors.averagingDouble(dvd -> ChronoUnit.YEARS.between(dvd.getReleaseDate(), today)));
+        return df.format(avrAge);
     }
 
     @Override
-    public DVD findNewestMovie() {
-        return null;
+    public DVD findNewestMovie() throws DVDLibraryPersistenceException{
+        loadDVDLibrary();
+        Optional<DVD> newestMovie = dvdCollection.values().stream()
+                .max(Comparator.comparing(DVD::getReleaseDate));
+        return newestMovie.get();
     }
 
     @Override
-    public DVD findOldestMovie() {
-        return null;
+    public DVD findOldestMovie() throws DVDLibraryPersistenceException {
+        loadDVDLibrary();
+        Optional<DVD> oldestMovie = dvdCollection.values().stream()
+                .min(Comparator.comparing(DVD::getReleaseDate));
+        return oldestMovie.get();
     }
 
 
