@@ -5,7 +5,7 @@ import org.example.dto.DVD;
 import java.util.List;
 
 public interface Dao {
-    DVD addDVD(String DVDid, DVD dvd) throws DVDLibraryPersistenceException;
+    DVD addDVD(DVD dvd) throws DVDLibraryPersistenceException;
 
     DVD removeDVD(String DVDid) throws DVDLibraryPersistenceException;
 

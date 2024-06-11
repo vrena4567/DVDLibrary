@@ -173,4 +173,8 @@ public class View {
     public void displayAverageAge(String average) {
         io.print("The average age of the movies is: " + average);
     }
+    public void displayErrorMessage(String errorMsg) {
+        io.print("=== ERROR ===");
+        io.print(errorMsg);
+    }
 }

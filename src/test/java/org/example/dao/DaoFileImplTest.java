@@ -34,7 +34,7 @@ class DaoFileImplTest {
         dvd.setUserNote("A good movie, recommending");
 
         // Add DVD to the dao
-        testDao.addDVD(dvdId, dvd);
+        testDao.addDVD(dvd);
 
         // Get DVD by id from the dao
         DVD retrievedDVDById = testDao.getDvdById(dvdId);
@@ -88,8 +88,8 @@ class DaoFileImplTest {
         secondDvd.setUserNote("An inspiring movie to watch");
 
         // Add both DVDs to the dao
-        testDao.addDVD(firstDvdId, firstDvd);
-        testDao.addDVD(secondDvdId, secondDvd);
+        testDao.addDVD(firstDvd);
+        testDao.addDVD(secondDvd);
 
         // Remove the first DVD - 001
         DVD removedDVD = testDao.removeDVD(firstDvdId);
@@ -140,7 +140,7 @@ class DaoFileImplTest {
         dvd.setUserNote("A good movie, recommending");
 
         // Add DVD to the dao
-        testDao.addDVD(dvdId, dvd);
+        testDao.addDVD(dvd);
 
         // Update DVD element
         int fieldToEdit = 1;
@@ -177,8 +177,8 @@ class DaoFileImplTest {
         secondDvd.setUserNote("An inspiring movie to watch");
 
         // Add both DVDs to the dao
-        testDao.addDVD(firstDvdId, firstDvd);
-        testDao.addDVD(secondDvdId, secondDvd);
+        testDao.addDVD(firstDvd);
+        testDao.addDVD(secondDvd);
 
         // Retrieve the list of all DVDs within the dao
         List<DVD> retrievedList = testDao.getAllDVDs();

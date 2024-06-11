@@ -1,20 +1,23 @@
 package org.example.controller;
 
 import org.example.dao.DVDLibraryPersistenceException;
-import org.example.dao.Dao;
-import org.example.dao.DaoFileImpl;
 import org.example.dto.DVD;
-import org.example.ui.UserIO;
-import org.example.ui.UserIOConsoleImpl;
+import org.example.service.DVDLibraryDataValidationException;
+import org.example.service.DVDService;
+import org.example.service.DuplicateDVDException;
 import org.example.ui.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
-    private Dao dao = new DaoFileImpl();
-    private UserIO io = new UserIOConsoleImpl();
-    private View view = new View(io);
+    private View view;
+    private DVDService service;
+
+    public Controller (View view, DVDService service) {
+        this.view = view;
+        this.service = service;
+    }
 
     public void run() throws DVDLibraryPersistenceException {
         boolean keepGoing = true;
@@ -42,18 +45,17 @@ public class Controller {
     }
     private void findOne() throws DVDLibraryPersistenceException {
         int choice = view.displayFinderMenu();
-        DVD foundDVD;
         switch (choice) {
             case 1 -> {
-                String average = dao.findAvarageAge();
+                String average = service.findAvarageAge();
                 view.displayAverageAge(average);
             }
             case 2 -> {
-                DVD youngest = dao.findNewestMovie();
+                DVD youngest = service.findNewestMovie();
                 view.displayDVD(youngest);
             }
             case 3 -> {
-                DVD oldest = dao.findOldestMovie();
+                DVD oldest = service.findOldestMovie();
                 view.displayDVD(oldest);
             }
             default -> unknownCommand();
@@ -61,24 +63,25 @@ public class Controller {
     }
 
     private void filterBy() throws DVDLibraryPersistenceException {
+        // TODO
         int choice = view.displayFilterMenu();
         List<DVD> filteredList = new ArrayList<>();
         switch (choice) {
             case 1 -> {
                 int year = view.getYearInput();
-                filteredList = dao.filterByYear(year);
+                filteredList = service.filterByYear(year);
             }
             case 2 -> {
                 String MpaaRating = view.getMpaaRating();
-                dao.filterByRating(MpaaRating);
+                service.filterByRating(MpaaRating);
             }
             case 3 -> {
                 String directorName = view.getDirectorNameInput();
-                filteredList = dao.filterByDirector(directorName);
+                filteredList = service.filterByDirector(directorName);
             }
             case 4 -> {
                 String studioName = view.getStudioInput();
-                filteredList = dao.filterByStudio(studioName);
+                filteredList = service.filterByStudio(studioName);
             }
             default -> unknownCommand();
         }
@@ -89,32 +92,33 @@ public class Controller {
     private void searchByTitle() throws DVDLibraryPersistenceException{
         view.displaySearchByTitleBanner();
         String title = view.getDVDTitle();
-        DVD searchedDvd = dao.getDvdByTitle(title);
+        DVD searchedDvd = service.getDVDByTitle(title);
         view.displayDVD(searchedDvd);
     }
 
     private void searchById() throws DVDLibraryPersistenceException {
         view.displaySearchByIdBanner();
         String dvdId = view.getDvdIdForSearch();
-        DVD searchedDVD = dao.getDvdById(dvdId);
+        DVD searchedDVD = service.getDVDById(dvdId);
         view.displayDVD(searchedDVD);
     }
 
     private void delete() throws DVDLibraryPersistenceException {
         view.displayDeleteBanner();
         String dvdId = view.deleteDVDById();
-        DVD dvd = dao.getDvdById(dvdId);
-        dao.removeDVD(dvdId);
+        DVD dvd = service.getDVDById(dvdId);
+        service.removeDVD(dvdId);
         view.displaySuccessDeletionBanner(dvd);
     }
 
     private void edit() throws DVDLibraryPersistenceException {
         view.displayEditBanner();
         String dvdId = view.getDvdIdForEdit();
-        DVD dvdToEdit = dao.getDvdById(dvdId);
+        DVD dvdToEdit = service.getDVDById(dvdId);
         int fieldNum = view.getFieldToEdit();
         String newInfoForField = view.getNewInfoForDVDField();
-        dao.updateDVD(dvdToEdit, fieldNum, newInfoForField);
+        //TODO
+        service.updateDVD(dvdToEdit, fieldNum, newInfoForField);
         view.displayEditSuccesBanner();
     }
 
@@ -124,14 +128,23 @@ public class Controller {
     }
 
     private void create() throws DVDLibraryPersistenceException {
-        DVD dvd = view.getNewDvdInfo();
-        dao.addDVD(dvd.getDvdId(), dvd);
-        view.displaySuccessBannerNewDvd();
+        boolean hasError;
+        do {
+            DVD dvd = view.getNewDvdInfo();
+            try {
+                service.createDVD(dvd);
+                view.displaySuccessBannerNewDvd();
+                hasError = false;
+            } catch (DuplicateDVDException | DVDLibraryDataValidationException e) {
+                hasError = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasError);
     }
 
     private void listAll() throws DVDLibraryPersistenceException {
         view.displayListBanner();
-        List <DVD> dvdList = dao.getAllDVDs();
+        List <DVD> dvdList = service.getAllDVDs();
         view.displayAllDvds(dvdList);
     }
 

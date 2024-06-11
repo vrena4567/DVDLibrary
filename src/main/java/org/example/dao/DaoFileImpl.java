@@ -27,7 +27,6 @@ public class DaoFileImpl implements Dao {
      * If there is already a DVD associated with the given DVD id it will return
      * that DVD object, otherwise it will return null.
      *
-     * @param dvdId id with which DVD is to be associated
      * @param dvd DVD to be added to the library
      * @return the DVD object previously associated with the given DVD id if
      * it exist, null otherwise
@@ -35,9 +34,9 @@ public class DaoFileImpl implements Dao {
      *      * loading of the file wasn't successful
      */
     @Override
-    public DVD addDVD(String dvdId, DVD dvd) throws DVDLibraryPersistenceException {
+    public DVD addDVD(DVD dvd) throws DVDLibraryPersistenceException {
         loadDVDLibrary();
-        DVD newDVD = dvdCollection.put(dvdId, dvd);
+        DVD newDVD = dvdCollection.put(dvd.getDvdId(), dvd);
         writeDVDLibrary();
         return newDVD;
     }
